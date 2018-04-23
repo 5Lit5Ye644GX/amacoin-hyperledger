@@ -1,0 +1,36 @@
+namespace com.amaris.coin
+
+participant Owner identified by id {
+  o String id
+  o String firstName
+  o String lastName
+}
+
+asset Account identified by id {
+  o   String  id
+  --> Owner   owner
+  o   Double  amount
+}
+
+transaction Issue {
+  --> Account account
+  o   Double  amount
+}
+
+transaction Transfer {
+  --> Account accountFrom
+  --> Account accountTo
+  o   Double  amount
+}
+
+event Issued {
+  --> Account account
+  o   Double  previousValue
+  o   Double  newValue
+}
+
+event Transfered {
+  --> Account accountFrom
+  --> Account accountTo
+  o   Double amount
+}
