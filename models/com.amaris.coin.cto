@@ -1,15 +1,19 @@
 namespace com.amaris.coin
 
-participant Owner identified by id {
-  o String id
-  o String firstName
-  o String lastName
+participant Customer identified by id {
+  o   String  id
+  o   String  firstName
+  o   String  lastName
+  --> Account account optional
 }
 
-asset Account identified by id {
-  o   String  id
-  --> Owner   owner
-  o   Double  amount
+participant Banker extends Customer {
+
+}
+
+asset Account identified by iban {
+  o   String    iban
+  o   Double    amount
 }
 
 transaction Issue {
@@ -18,8 +22,8 @@ transaction Issue {
 }
 
 transaction Transfer {
-  --> Account accountFrom
-  --> Account accountTo
+  --> Account from
+  --> Account to
   o   Double  amount
 }
 
@@ -30,7 +34,7 @@ event Issued {
 }
 
 event Transfered {
-  --> Account accountFrom
-  --> Account accountTo
-  o   Double amount
+  --> Account from
+  --> Account to
+  o   Double  amount
 }

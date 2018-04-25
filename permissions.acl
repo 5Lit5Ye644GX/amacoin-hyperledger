@@ -1,26 +1,70 @@
 // Participant rules
-rule EverybodyCanReadEverything {
-    description: "Allow all participants read access to all resources"
-    participant: "com.amaris.coin.Owner"
+
+rule CustomerCanUpdateAccountDuringTransfer {
+    description: "Allow customers to modify accounts during a transfer"
+    participant(p): "com.amaris.coin.Customer"
+    operation: UPDATE
+    resource(a): "com.amaris.coin.Account"
+    transaction(tx): "com.amaris.coin.Transfer"
+    condition: (tx.from.getIdentifier() === p.account.getIdentifier())
+    action: ALLOW
+}
+
+rule CustomerCanDeleteTheirAccount {
+    description: "Allow all customer to delete their account"
+    participant(p): "com.amaris.coin.Customer"
+    operation: DELETE
+    resource(r): "com.amaris.coin.Account"
+    condition: (r.getIdentifier() === p.account.getIdentifier())
+    action: ALLOW
+}
+
+rule BankerCanManageAccounts {
+    description: "Allow all bankers to create or delete accounts for customers"
+    participant: "com.amaris.coin.Banker"
+    operation: CREATE, DELETE
+    resource: "com.amaris.coin.Account"
+    action: ALLOW
+}
+
+rule BankerCanCreateCustomers {
+    description: "Allow all bankers to create or delete customers"
+    participant: "com.amaris.coin.Banker"
+    operation: CREATE, UPDATE, DELETE
+    resource: "com.amaris.coin.Customer"
+    action: ALLOW
+}
+
+rule BankerCanUpdateAccountDuringIssue {
+    description: "Allow bankers to modify accounts during an issue transaction"
+    participant: "com.amaris.coin.Banker"
+    operation: UPDATE
+    resource: "com.amaris.coin.Account"
+    transaction: "com.amaris.coin.Issue"
+    action: ALLOW
+}
+
+rule BankerCanIssue {
+    description: "Allow all bankers to issue accounts"
+    participant: "com.amaris.coin.Banker"
+    operation: READ, CREATE
+    resource: "com.amaris.coin.Issue"
+    action: ALLOW
+}
+
+rule EverybodyCanAccessAccounts {
+    description: "Allow all participants to see accounts"
+    participant: "com.amaris.coin.*"
     operation: READ
-    resource: "com.amaris.coin.*"
+    resource: "com.amaris.coin.Account"
     action: ALLOW
 }
 
 rule EverybodyCanSubmitTransfers {
     description: "Allow all participants to submit transactions"
-    participant: "com.amaris.coin.Owner"
-    operation: CREATE
+    participant: "com.amaris.coin.*"
+    operation: READ, CREATE
     resource: "com.amaris.coin.Transfer"
-    action: ALLOW
-}
-
-rule OwnerHasFullAccessToTheirAccount {
-    description: "Allow all participants access to their accounts"
-    participant(p): "com.amaris.coin.Owner"
-    operation: CREATE, DELETE
-    resource(r): "com.amaris.coin.Account"
-    condition: (r.owner.getIdentifier() === p.getIdentifier())
     action: ALLOW
 }
 
