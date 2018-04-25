@@ -1,4 +1,4 @@
-// Participant rules
+// Customer rules
 
 rule CustomerCanUpdateAccountDuringTransfer {
     description: "Allow customers to modify accounts during a transfer"
@@ -18,6 +18,8 @@ rule CustomerCanDeleteTheirAccount {
     condition: (r.getIdentifier() === p.account.getIdentifier())
     action: ALLOW
 }
+
+// Banker rules
 
 rule BankerCanManageAccounts {
     description: "Allow all bankers to create or delete accounts for customers"
@@ -52,6 +54,8 @@ rule BankerCanIssue {
     action: ALLOW
 }
 
+// Everybody rules
+
 rule EverybodyCanAccessAccounts {
     description: "Allow all participants to see accounts"
     participant: "com.amaris.coin.*"
@@ -77,6 +81,8 @@ rule SystemACL {
   resource: "org.hyperledger.composer.system.**"
   action: ALLOW
 }
+
+// Network rules
 
 rule NetworkAdminUser {
     description: "Grant business network administrators full access to user resources"
