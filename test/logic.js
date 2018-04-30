@@ -269,7 +269,6 @@ describe('#' + namespace, () => {
 
         // Validate the asset.
         asset3 = await assetRegistry.get('3');
-        //asset3.owner.getFullyQualifiedIdentifier().should.equal(participantNS + '#alice@email.com');
         asset3.amount.should.equal(30);
     });
 
@@ -359,7 +358,7 @@ describe('#' + namespace, () => {
         businessNetworkConnection.submitTransaction(transaction).should.be.rejectedWith(/does not have .* access to resource/);
     });
 
-    it('Bob cannot update his assets', async () => {
+    it('Bob cannot update his account', async () => {
         // Use the identity for Bob.
         await useIdentity(bobCardName);
 
@@ -425,7 +424,7 @@ describe('#' + namespace, () => {
         assetRegistry.remove('1').should.be.rejectedWith(/does not have .* access to resource/);
     });
 
-    it('Alice can submit a transaction from her account to bob\'s account', async () => {
+    it('Alice can submit a transaction from her account to Bob\'s account', async () => {
         // Use the identity for Alice.
         await useIdentity(aliceCardName);
 
@@ -467,7 +466,7 @@ describe('#' + namespace, () => {
         businessNetworkConnection.submitTransaction(transaction).should.be.rejectedWith(/does not have .* access to resource/);
     });
 
-    it('Alice cannot submit a transaction with not enough funds', async () => {
+    it('Alice cannot submit a transaction without sufficient funds', async () => {
         // Use the identity for Alice.
         await useIdentity(aliceCardName);
 
